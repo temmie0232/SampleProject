@@ -25,3 +25,5 @@
 - Validation:
   - `backend`: `mvn -DskipTests package`
   - `frontend`: `npm install` / `npm run build`（npm auditで中程度の脆弱性が2件）
+- Git:
+  - Committed changes and pushed to `origin/main`
