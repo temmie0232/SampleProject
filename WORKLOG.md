@@ -32,6 +32,9 @@
   - 貸出レスポンスに借り手情報を追加
   - 管理者UI（貸出一覧 + 検索 + ページング）
   - 管理者UI（表紙アップロード）
+- Extended admin features:
+  - 貸出一覧の検索強化（Book ID / 期間指定）
+  - 表紙削除 API/UI
 - Validation:
   - `backend`: `mvn -DskipTests package`
   - `frontend`: `npm run build`

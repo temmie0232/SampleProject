@@ -6,6 +6,9 @@ export default function AdminLoansPage() {
   const [items, setItems] = useState<Loan[]>([]);
   const [status, setStatus] = useState("");
   const [borrowerEmail, setBorrowerEmail] = useState("");
+  const [bookId, setBookId] = useState("");
+  const [borrowedFrom, setBorrowedFrom] = useState("");
+  const [borrowedTo, setBorrowedTo] = useState("");
   const [q, setQ] = useState("");
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
@@ -14,6 +17,9 @@ export default function AdminLoansPage() {
     const res: PageResponse<Loan> = await getAdminLoans({
       status: status || undefined,
       borrowerEmail: borrowerEmail || undefined,
+      bookId: bookId || undefined,
+      borrowedFrom: borrowedFrom || undefined,
+      borrowedTo: borrowedTo || undefined,
       q: q || undefined,
       page: pageNo,
       size: 20,
@@ -41,6 +47,21 @@ export default function AdminLoansPage() {
           placeholder="借りた人のEmail"
           value={borrowerEmail}
           onChange={(e) => setBorrowerEmail(e.target.value)}
+        />
+        <input
+          placeholder="Book ID"
+          value={bookId}
+          onChange={(e) => setBookId(e.target.value)}
+        />
+        <input
+          type="date"
+          value={borrowedFrom}
+          onChange={(e) => setBorrowedFrom(e.target.value)}
+        />
+        <input
+          type="date"
+          value={borrowedTo}
+          onChange={(e) => setBorrowedTo(e.target.value)}
         />
         <select value={status} onChange={(e) => setStatus(e.target.value)}>
           <option value="">全ステータス</option>
@@ -87,4 +108,3 @@ export default function AdminLoansPage() {
     </div>
   );
 }
-

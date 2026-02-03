@@ -22,6 +22,8 @@ export async function getAdminLoans(params: {
   borrowerEmail?: string;
   bookId?: string;
   q?: string;
+  borrowedFrom?: string;
+  borrowedTo?: string;
   page?: number;
   size?: number;
   sort?: string;

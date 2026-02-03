@@ -45,3 +45,8 @@ export async function uploadCover(bookId: string, file: File) {
   });
   return res.data as Book;
 }
+
+export async function deleteCover(bookId: string) {
+  const res = await api.delete(`/books/${bookId}/cover`);
+  return res.data as Book;
+}

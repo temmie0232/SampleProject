@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { addCopies, createBook, getBooks, uploadCover } from "../api/books";
+import { addCopies, createBook, deleteCover, getBooks, uploadCover } from "../api/books";
 import { getAuthors } from "../api/authors";
 import { getCategories } from "../api/categories";
 import { Author, Book, Category } from "../api/types";
@@ -53,6 +53,11 @@ export default function AdminBooksPage() {
     if (!file) return;
     await uploadCover(bookId, file);
     onCoverChange(bookId, null);
+    await load();
+  };
+
+  const onDeleteCover = async (bookId: string) => {
+    await deleteCover(bookId);
     await load();
   };
 
@@ -131,6 +136,9 @@ export default function AdminBooksPage() {
                 />
                 <button className="btn" onClick={() => onUploadCover(book.id)} disabled={!coverFiles[book.id]}>
                   表紙アップ
+                </button>
+                <button className="btn secondary" onClick={() => onDeleteCover(book.id)} disabled={!book.coverUrl}>
+                  表紙削除
                 </button>
               </td>
             </tr>
