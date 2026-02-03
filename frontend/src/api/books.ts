@@ -36,3 +36,12 @@ export async function addCopies(bookId: string, count = 1) {
   const res = await api.post(`/books/${bookId}/copies`, { count });
   return res.data;
 }
+
+export async function uploadCover(bookId: string, file: File) {
+  const formData = new FormData();
+  formData.append("file", file);
+  const res = await api.post(`/books/${bookId}/cover`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return res.data as Book;
+}

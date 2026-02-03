@@ -16,3 +16,16 @@ export async function returnLoan(loanId: string) {
   return res.data;
 }
 
+export async function getAdminLoans(params: {
+  status?: string;
+  borrowerId?: string;
+  borrowerEmail?: string;
+  bookId?: string;
+  q?: string;
+  page?: number;
+  size?: number;
+  sort?: string;
+}) {
+  const res = await api.get<PageResponse<Loan>>("/admin/loans", { params });
+  return res.data;
+}

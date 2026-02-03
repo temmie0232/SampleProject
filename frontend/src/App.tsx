@@ -10,6 +10,7 @@ import MyHistoryPage from "./pages/MyHistoryPage";
 import AdminCategoriesPage from "./pages/AdminCategoriesPage";
 import AdminAuthorsPage from "./pages/AdminAuthorsPage";
 import AdminBooksPage from "./pages/AdminBooksPage";
+import AdminLoansPage from "./pages/AdminLoansPage";
 
 export default function App() {
   const { user, logout } = useAuth();
@@ -25,6 +26,7 @@ export default function App() {
             <Link to="/admin/books">図書管理</Link>
             <Link to="/admin/categories">カテゴリ管理</Link>
             <Link to="/admin/authors">著者管理</Link>
+            <Link to="/admin/loans">貸出一覧</Link>
           </>
         )}
         {user ? (
@@ -97,8 +99,15 @@ export default function App() {
             </RequireAuth>
           }
         />
+        <Route
+          path="/admin/loans"
+          element={
+            <RequireAuth>
+              <AdminLoansPage />
+            </RequireAuth>
+          }
+        />
       </Routes>
     </>
   );
 }
-

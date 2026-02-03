@@ -27,3 +27,11 @@
   - `frontend`: `npm install` / `npm run build`（npm auditで中程度の脆弱性が2件）
 - Git:
   - Committed changes and pushed to `origin/main`
+- Added admin features:
+  - 管理者向け「貸出一覧」API（検索: ステータス/借り手Email/タイトル）
+  - 貸出レスポンスに借り手情報を追加
+  - 管理者UI（貸出一覧 + 検索 + ページング）
+  - 管理者UI（表紙アップロード）
+- Validation:
+  - `backend`: `mvn -DskipTests package`
+  - `frontend`: `npm run build`

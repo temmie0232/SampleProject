@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { addCopies, createBook, getBooks } from "../api/books";
+import { addCopies, createBook, getBooks, uploadCover } from "../api/books";
 import { getAuthors } from "../api/authors";
 import { getCategories } from "../api/categories";
 import { Author, Book, Category } from "../api/types";
@@ -12,6 +12,7 @@ export default function AdminBooksPage() {
   const [description, setDescription] = useState("");
   const [authorIds, setAuthorIds] = useState<string[]>([]);
   const [categoryIds, setCategoryIds] = useState<string[]>([]);
+  const [coverFiles, setCoverFiles] = useState<Record<string, File | null>>({});
 
   const load = async () => {
     const [bookRes, authorRes, categoryRes] = await Promise.all([
@@ -40,6 +41,18 @@ export default function AdminBooksPage() {
 
   const onAddCopy = async (bookId: string) => {
     await addCopies(bookId, 1);
+    await load();
+  };
+
+  const onCoverChange = (bookId: string, file: File | null) => {
+    setCoverFiles((prev) => ({ ...prev, [bookId]: file }));
+  };
+
+  const onUploadCover = async (bookId: string) => {
+    const file = coverFiles[bookId];
+    if (!file) return;
+    await uploadCover(bookId, file);
+    onCoverChange(bookId, null);
     await load();
   };
 
@@ -95,6 +108,7 @@ export default function AdminBooksPage() {
             <th>著者</th>
             <th>カテゴリ</th>
             <th>在庫</th>
+            <th>表紙</th>
           </tr>
         </thead>
         <tbody>
@@ -107,6 +121,16 @@ export default function AdminBooksPage() {
                 {book.availableCopies}/{book.totalCopies}
                 <button className="btn" style={{ marginLeft: 8 }} onClick={() => onAddCopy(book.id)}>
                   +1冊
+                </button>
+              </td>
+              <td>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => onCoverChange(book.id, e.target.files?.[0] ?? null)}
+                />
+                <button className="btn" onClick={() => onUploadCover(book.id)} disabled={!coverFiles[book.id]}>
+                  表紙アップ
                 </button>
               </td>
             </tr>

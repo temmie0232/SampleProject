@@ -34,6 +34,9 @@ export type Loan = {
   copyId: string;
   bookId: string;
   bookTitle: string;
+  borrowerId: string;
+  borrowerEmail: string;
+  borrowerDisplayName: string;
   status: "ACTIVE" | "RETURNED";
   borrowedAt: string;
   dueDate: string;
@@ -47,4 +50,3 @@ export type PageResponse<T> = {
   totalItems: number;
   totalPages: number;
 };
-
