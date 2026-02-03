@@ -41,3 +41,5 @@
 - Validation:
   - `backend`: `mvn -DskipTests package`
   - `frontend`: `npm run build`
+- Test run:
+  - `backend`: `mvn test`（この環境では Docker 未検出のため Testcontainers がスキップ）
