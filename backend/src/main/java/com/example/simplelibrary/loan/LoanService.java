@@ -105,6 +105,28 @@ public class LoanService {
         return pageToResponse(page);
     }
 
+    @Transactional(readOnly = true)
+    public PageResponse<LoanResponse> listAll(String status, String borrowerId, String borrowerEmail, String bookId,
+                                              String q, Pageable pageable) {
+        LoanStatus loanStatus = null;
+        if (status != null && !status.isBlank()) {
+            try {
+                loanStatus = LoanStatus.valueOf(status);
+            } catch (IllegalArgumentException ex) {
+                throw new IllegalArgumentException("Invalid status");
+            }
+        }
+        Page<Loan> page = loanRepository.findAll(
+                LoanSpecifications.hasStatus(loanStatus)
+                        .and(LoanSpecifications.hasBorrowerId(borrowerId))
+                        .and(LoanSpecifications.hasBorrowerEmail(borrowerEmail))
+                        .and(LoanSpecifications.hasBookId(bookId))
+                        .and(LoanSpecifications.bookTitleContains(q)),
+                pageable
+        );
+        return pageToResponse(page);
+    }
+
     private PageResponse<LoanResponse> pageToResponse(Page<Loan> page) {
         List<LoanResponse> items = page.getContent().stream()
                 .map(this::toResponse)
@@ -118,6 +140,9 @@ public class LoanService {
                 loan.getCopy().getId(),
                 loan.getCopy().getBook().getId(),
                 loan.getCopy().getBook().getTitle(),
+                loan.getBorrower().getId(),
+                loan.getBorrower().getEmail(),
+                loan.getBorrower().getDisplayName(),
                 loan.getStatus(),
                 loan.getBorrowedAt(),
                 loan.getDueDate(),

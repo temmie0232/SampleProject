@@ -72,12 +72,17 @@ public class LoanController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/loans")
     public PageResponse<LoanResponse> allLoans(
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String borrowerId,
+            @RequestParam(required = false) String borrowerEmail,
+            @RequestParam(required = false) String bookId,
+            @RequestParam(required = false) String q,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(defaultValue = "borrowedAt,desc") String sort
     ) {
         Pageable pageable = createPageable(page, size, sort);
-        return loanService.listAll(pageable);
+        return loanService.listAll(status, borrowerId, borrowerEmail, bookId, q, pageable);
     }
 
     private Pageable createPageable(int page, int size, String sort) {
