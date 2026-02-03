@@ -5,6 +5,7 @@ import com.example.simplelibrary.book.BookCopy;
 import com.example.simplelibrary.user.User;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
+import java.time.Instant;
 import org.springframework.data.jpa.domain.Specification;
 
 public class LoanSpecifications {
@@ -62,5 +63,22 @@ public class LoanSpecifications {
             return cb.like(cb.lower(bookJoin.get("title")), like);
         };
     }
-}
 
+    public static Specification<Loan> borrowedAtFrom(Instant from) {
+        return (root, query, cb) -> {
+            if (from == null) {
+                return cb.conjunction();
+            }
+            return cb.greaterThanOrEqualTo(root.get("borrowedAt"), from);
+        };
+    }
+
+    public static Specification<Loan> borrowedAtTo(Instant toExclusive) {
+        return (root, query, cb) -> {
+            if (toExclusive == null) {
+                return cb.conjunction();
+            }
+            return cb.lessThan(root.get("borrowedAt"), toExclusive);
+        };
+    }
+}

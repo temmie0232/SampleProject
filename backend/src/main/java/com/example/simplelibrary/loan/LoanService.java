@@ -12,6 +12,7 @@ import com.example.simplelibrary.user.UserRepository;
 import com.example.simplelibrary.web.PageResponse;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
@@ -107,7 +108,7 @@ public class LoanService {
 
     @Transactional(readOnly = true)
     public PageResponse<LoanResponse> listAll(String status, String borrowerId, String borrowerEmail, String bookId,
-                                              String q, Pageable pageable) {
+                                              String q, String borrowedFrom, String borrowedTo, Pageable pageable) {
         LoanStatus loanStatus = null;
         if (status != null && !status.isBlank()) {
             try {
@@ -116,12 +117,27 @@ public class LoanService {
                 throw new IllegalArgumentException("Invalid status");
             }
         }
+        Instant fromInstant = null;
+        Instant toInstant = null;
+        if (borrowedFrom != null && !borrowedFrom.isBlank()) {
+            LocalDate fromDate = LocalDate.parse(borrowedFrom);
+            fromInstant = fromDate.atStartOfDay(ZoneOffset.UTC).toInstant();
+        }
+        if (borrowedTo != null && !borrowedTo.isBlank()) {
+            LocalDate toDate = LocalDate.parse(borrowedTo);
+            toInstant = toDate.plusDays(1).atStartOfDay(ZoneOffset.UTC).toInstant();
+        }
+        if (fromInstant != null && toInstant != null && fromInstant.isAfter(toInstant)) {
+            throw new IllegalArgumentException("Invalid date range");
+        }
         Page<Loan> page = loanRepository.findAll(
                 LoanSpecifications.hasStatus(loanStatus)
                         .and(LoanSpecifications.hasBorrowerId(borrowerId))
                         .and(LoanSpecifications.hasBorrowerEmail(borrowerEmail))
                         .and(LoanSpecifications.hasBookId(bookId))
-                        .and(LoanSpecifications.bookTitleContains(q)),
+                        .and(LoanSpecifications.bookTitleContains(q))
+                        .and(LoanSpecifications.borrowedAtFrom(fromInstant))
+                        .and(LoanSpecifications.borrowedAtTo(toInstant)),
                 pageable
         );
         return pageToResponse(page);

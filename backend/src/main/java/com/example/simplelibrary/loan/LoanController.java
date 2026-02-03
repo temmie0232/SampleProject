@@ -77,12 +77,14 @@ public class LoanController {
             @RequestParam(required = false) String borrowerEmail,
             @RequestParam(required = false) String bookId,
             @RequestParam(required = false) String q,
+            @RequestParam(required = false) String borrowedFrom,
+            @RequestParam(required = false) String borrowedTo,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(defaultValue = "borrowedAt,desc") String sort
     ) {
         Pageable pageable = createPageable(page, size, sort);
-        return loanService.listAll(status, borrowerId, borrowerEmail, bookId, q, pageable);
+        return loanService.listAll(status, borrowerId, borrowerEmail, bookId, q, borrowedFrom, borrowedTo, pageable);
     }
 
     private Pageable createPageable(int page, int size, String sort) {

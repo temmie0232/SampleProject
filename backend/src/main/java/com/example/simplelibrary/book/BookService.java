@@ -115,6 +115,18 @@ public class BookService {
         return get(id);
     }
 
+    @Transactional
+    public BookResponse deleteCover(String id) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Book not found"));
+        if (book.getCoverPath() == null) {
+            throw new NotFoundException("Cover not found");
+        }
+        fileStorageService.delete(book.getCoverPath());
+        book.setCoverPath(null);
+        return get(id);
+    }
+
     private Set<Author> resolveAuthors(List<String> ids) {
         if (ids == null || ids.isEmpty()) {
             return new java.util.HashSet<>();

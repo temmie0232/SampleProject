@@ -77,6 +77,12 @@ public class BookController {
         return bookService.uploadCover(id, file);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}/cover")
+    public BookResponse deleteCover(@PathVariable String id) {
+        return bookService.deleteCover(id);
+    }
+
     @GetMapping("/{id}/cover")
     public Resource getCover(@PathVariable String id) {
         return bookCoverService.getCover(id);

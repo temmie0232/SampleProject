@@ -68,5 +68,21 @@ public class FileStorageService {
             throw new NotFoundException("File not found");
         }
     }
-}
 
+    public void delete(String relativePath) {
+        try {
+            Path file = baseDir.resolve(relativePath).normalize();
+            if (!file.startsWith(baseDir)) {
+                throw new NotFoundException("File not found");
+            }
+            if (!Files.exists(file)) {
+                throw new NotFoundException("File not found");
+            }
+            Files.deleteIfExists(file);
+        } catch (NotFoundException e) {
+            throw e;
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to delete file");
+        }
+    }
+}
