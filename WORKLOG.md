@@ -35,6 +35,9 @@
 - Extended admin features:
   - 貸出一覧の検索強化（Book ID / 期間指定）
   - 表紙削除 API/UI
+- Tests:
+  - Testcontainers を使った統合テスト追加（AuthService/LoanService）
+  - `mvn test` の実行手順を README に追加
 - Validation:
   - `backend`: `mvn -DskipTests package`
   - `frontend`: `npm run build`

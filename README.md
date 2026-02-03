@@ -45,7 +45,15 @@ npm run dev
 - Swagger UI: `http://localhost:8080/swagger-ui/index.html`
 - Health: `http://localhost:8080/actuator/health`
 
-## 4. 管理者ログイン
+## 4. テスト
+バックエンドのテストは Testcontainers（Docker）を使用します。
+
+```bash
+cd backend
+mvn test
+```
+
+## 5. 管理者ログイン
 初回起動時、管理者が自動生成されます（環境変数で変更可能）。
 
 ```
