@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:sample_workflow}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Tokyo
+    username: ${DB_USER:sample_user}
+    password: ${DB_PASSWORD:sample_pass}
+  jpa:
+    show-sql: true
