@@ -1,0 +1,17 @@
+# general
+.DS_Store
+
+# frontend
+frontend/node_modules/
+frontend/dist/
+frontend/*.tsbuildinfo
+frontend/vite.config.js
+frontend/vite.config.d.ts
+
+# backend
+backend/build/
+backend/.gradle/
+
+# project level
+.gradle/
+.gradle-project-cache/
